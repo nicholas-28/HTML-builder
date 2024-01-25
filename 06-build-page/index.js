@@ -3,6 +3,8 @@ const path = require('path');
 
 const baseDir = __dirname;
 const distDir = path.join(baseDir, 'project-dist');
+const templateFilePath = path.join(baseDir, 'template.html');
+const componentsDir = path.join(baseDir, 'components');
 
 async function createDistDir() {
     try {
@@ -13,4 +15,25 @@ async function createDistDir() {
     }
 }
 
+async function buildHTML() {
+    try {
+        let templateContent = await fs.readFile(templateFilePath, 'utf-8');
+
+        const placeholders = templateContent.match(/{{\w+}}/g) || [];
+
+        for (const placeholder of placeholders) {
+            const componentName = placeholder.replace(/{{|}}/g, '');
+            const componentPath = path.join(componentsDir, `${componentName}.html`);
+            const componentContent = await fs.readFile(componentPath, 'utf-8');
+            templateContent = templateContent.replace(new RegExp(placeholder, 'g'), componentContent);
+        }
+
+        await fs.writeFile(path.join(distDir, 'index.html'), templateContent);
+        console.log('index.html has been created successfully.');
+    } catch (error) {
+        console.error('Error building index.html:', error);
+    }
+}
+
 createDistDir();
+buildHTML();
