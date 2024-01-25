@@ -5,6 +5,7 @@ const baseDir = __dirname;
 const distDir = path.join(baseDir, 'project-dist');
 const templateFilePath = path.join(baseDir, 'template.html');
 const componentsDir = path.join(baseDir, 'components');
+const stylesDir = path.join(baseDir, 'styles');
 
 async function createDistDir() {
     try {
@@ -35,5 +36,25 @@ async function buildHTML() {
     }
 }
 
+async function compileCSS() {
+    try {
+        const cssFiles = await fs.readdir(stylesDir);
+        let combinedCSS = '';
+
+        for (const file of cssFiles) {
+            if(file.endsWith('.css')) {
+                const cssContent = await fs.readFile(path.join(stylesDir, file), 'utf-8');
+                combinedCSS += cssContent + '\n';
+            }
+        }
+
+        await fs.writeFile(path.join(distDir, 'style.css'), combinedCSS);
+        console.log('style.css has been compiled successfully.');
+    } catch (error) {
+        console.error('Error compiling style.css:', error);
+    }
+}
+
 createDistDir();
 buildHTML();
+compileCSS();
