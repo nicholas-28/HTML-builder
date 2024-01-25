@@ -1,6 +1,5 @@
 const fs = require('fs/promises');
 const path = require('path');
-const secretFolderPath = path.join(__dirname, 'secret-folder');
 
 async function listFilesInDirectory(dirPath) {
     try {
@@ -15,7 +14,7 @@ async function listFilesInDirectory(dirPath) {
         }
         return fileNames;
     } catch (error) {
-        console.error("Error reading directory", error);
+        console.error('Error reading directory', error);
     }
 }
 
@@ -35,12 +34,21 @@ async function displayFileInfo(dirPath, fileNames) {
         if (stats) {
             const fileSize = stats.size;
             const fileExtension = path.extname(fileName).slice(1);
-            const name = path.basename(fileName, "." + fileExtension);
+            const name = path.basename(fileName, '.' + fileExtension);
             console.log(`${name} - ${fileExtension} - ${fileSize} bytes`)
         }
     }
 }
 
+(async () => {
+    try {
+        const secretFolderPath = path.join(__dirname, 'secret-folder');
+        const fileNames = await listFilesInDirectory(secretFolderPath);
+        await displayFileInfo(secretFolderPath, fileNames);
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+})();
 
 // const testDirPath = path.join(__dirname, 'secret-folder');
 
