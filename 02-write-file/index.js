@@ -23,7 +23,7 @@ const handleInput = (input) => {
 
 rl.on("line", handleInput);
 
-process.on("SIGINT", () => {
+rl.on("SIGINT", () => {
     console.log("\nGoodbye!");
     rl.close();
 });
