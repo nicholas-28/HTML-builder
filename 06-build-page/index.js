@@ -6,6 +6,8 @@ const distDir = path.join(baseDir, 'project-dist');
 const templateFilePath = path.join(baseDir, 'template.html');
 const componentsDir = path.join(baseDir, 'components');
 const stylesDir = path.join(baseDir, 'styles');
+const assetsDir = path.join(baseDir, 'assets');
+const copyAssetsDir = path.join(distDir, 'assets');
 
 async function createDistDir() {
     try {
@@ -55,6 +57,29 @@ async function compileCSS() {
     }
 }
 
+async function copyAssets(sourceDir, targetDir) {
+    try {
+        const entries = await fs.readdir(sourceDir, {withFileTypes: true });
+
+        await fs.mkdir(targetDir, {recursive: true });
+
+        for (const entry of entries) {
+            const srcPath = path.join(sourceDir, entry.name);
+            const destPath = path.join(targetDir, entry.name);
+
+            if (entry.isDirectory()) {
+                await copyAssets(srcPath, destPath);
+            } else {
+                await fs.copyFile(srcPath, destPath);
+            }
+        }
+
+    } catch (error) {
+        console.error('Error copying assets:', error);
+    }
+}
+
 createDistDir();
 buildHTML();
 compileCSS();
+copyAssets(assetsDir, copyAssetsDir);
