@@ -49,24 +49,3 @@ async function displayFileInfo(dirPath, fileNames) {
         console.error('An error occurred:', error);
     }
 })();
-
-// const testDirPath = path.join(__dirname, 'secret-folder');
-
-// listFilesInDirectory(testDirPath)
-//   .then(fileNames => {
-//     console.log('Files in directory:', fileNames);
-//   })
-//   .catch(error => {
-//     console.error('An error occurred:', error);
-//   });
-// const dirPath = path.join(__dirname, 'secret-folder'); 
-// const fileName = 'text.txt'; 
-
-// getFileStats(dirPath, fileName)
-//   .then(stats => {
-//     console.log(`Stats for file ${fileName}:`, stats);
-//   })
-//   .catch(error => {
-//     console.error('Failed to get file stats:', error);
-//   });
-
