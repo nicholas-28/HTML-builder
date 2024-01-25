@@ -17,8 +17,27 @@ async function readFilesFolder() {
         const fileNames = await fs.readdir(filesFolderPath);
 
         console.log('Contents of the "files" folder:', fileNames);
+
+        await copyFiles(fileNames);
     } catch (error) {
         console.error('Error reading "files" folder:', error);
+    }
+}
+
+async function copyFiles(fileNames) {
+    try {
+        for (const fileName of fileNames) {
+            const sourceFilePath = path.join(__dirname, 'files', fileName);
+            const destinationFilePath = path.join(targetDir, fileName);
+
+            const fileContent = await fs.readFile(sourceFilePath);
+
+            await fs.writeFile(destinationFilePath, fileContent);
+            
+            console.log(`Copied file: ${fileName}`);
+        }
+    } catch (error) {
+        console.error('Error copying files:', error);
     }
 }
 createTargetDir();
