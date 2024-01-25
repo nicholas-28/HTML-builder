@@ -1,5 +1,6 @@
 const fs = require('fs/promises');
 const path = require('path');
+const secretFolderPath = path.join(__dirname, 'secret-folder');
 
 async function listFilesInDirectory(dirPath) {
     try {
@@ -28,6 +29,19 @@ async function getFileStats(dirPath, fileName) {
     }
 }
 
+async function displayFileInfo(dirPath, fileNames) {
+    for (const fileName of fileNames) {
+        const stats = await getFileStats(dirPath, fileName);
+        if (stats) {
+            const fileSize = stats.size;
+            const fileExtension = path.extname(fileName).slice(1);
+            const name = path.basename(fileName, "." + fileExtension);
+            console.log(`${name} - ${fileExtension} - ${fileSize} bytes`)
+        }
+    }
+}
+
+
 // const testDirPath = path.join(__dirname, 'secret-folder');
 
 // listFilesInDirectory(testDirPath)
@@ -47,3 +61,4 @@ async function getFileStats(dirPath, fileName) {
 //   .catch(error => {
 //     console.error('Failed to get file stats:', error);
 //   });
+
