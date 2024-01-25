@@ -18,6 +18,16 @@ async function listFilesInDirectory(dirPath) {
     }
 }
 
+async function getFileStats(dirPath, fileName) {
+    const filePath = path.join(dirPath, fileName);
+    try {
+        const stats = await fs.stat(filePath);
+        return stats;
+    } catch (error) {
+        console.error(`Error retrieving stats for file ${fileName}`, error);
+    }
+}
+
 // const testDirPath = path.join(__dirname, 'secret-folder');
 
 // listFilesInDirectory(testDirPath)
@@ -26,4 +36,14 @@ async function listFilesInDirectory(dirPath) {
 //   })
 //   .catch(error => {
 //     console.error('An error occurred:', error);
+//   });
+// const dirPath = path.join(__dirname, 'secret-folder'); 
+// const fileName = 'text.txt'; 
+
+// getFileStats(dirPath, fileName)
+//   .then(stats => {
+//     console.log(`Stats for file ${fileName}:`, stats);
+//   })
+//   .catch(error => {
+//     console.error('Failed to get file stats:', error);
 //   });
