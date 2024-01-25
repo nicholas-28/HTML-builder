@@ -10,4 +10,16 @@ async function createTargetDir() {
         console.error('Error creating target directory:', error);
     }
 }
+
+async function readFilesFolder() {
+    try {
+        const filesFolderPath = path.resolve(__dirname, 'files');
+        const fileNames = await fs.readdir(filesFolderPath);
+
+        console.log('Contents of the "files" folder:', fileNames);
+    } catch (error) {
+        console.error('Error reading "files" folder:', error);
+    }
+}
 createTargetDir();
+readFilesFolder();
